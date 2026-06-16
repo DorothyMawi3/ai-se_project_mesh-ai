@@ -17,7 +17,7 @@ export const createMessage = async (
   res: Response,
 ): Promise<void> => {
   const { question } = req.body;
-  const chatId = req.params.id;
+  const chatId = String(req.params.id);
   const userId = req.user!.userId;
 
   if (!question) {
