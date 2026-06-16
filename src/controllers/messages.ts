@@ -1,6 +1,8 @@
 import type { Request, Response } from 'express';
+import { Chat } from '../models/chat.js';
 import { Chunk } from '../models/chunk.js';
 import { Document } from '../models/document.js';
+import { Message } from '../models/message.js';
 import {
   buildContext,
   getClient,
@@ -10,11 +12,13 @@ import {
 import { createEmbedding } from '../utils/embeddings.js';
 import { rankBySimilarity } from '../utils/vector-search.js';
 
-export const queryDocuments = async (
+export const createMessage = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
   const { question } = req.body;
+  const chatId = req.params.id;
+  const userId = req.user!.userId;
 
   if (!question) {
     res.status(400).json({
@@ -25,7 +29,17 @@ export const queryDocuments = async (
     return;
   }
 
-  const userId = req.user!.userId;
+  const chat = await Chat.findOne({ _id: chatId, userId });
+
+  if (!chat) {
+    res.status(404).json({
+      success: false,
+      data: null,
+      error: { message: 'chat not found' },
+    });
+    return;
+  }
+
   const userDocs = await Document.find({ userId }, '_id');
   const docIds = userDocs.map((document) => document._id);
 
@@ -61,12 +75,21 @@ export const queryDocuments = async (
       ).choices[0]?.message?.content || 'No answer was generated.'
     : `Based on the uploaded documents, here is the most relevant context I found: ${context}`;
 
-  res.status(200).json({
+  const userMessage = await Message.create({
+    chatId,
+    role: 'user',
+    content: question,
+  });
+
+  const assistantMessage = await Message.create({
+    chatId,
+    role: 'assistant',
+    content: answer,
+  });
+
+  res.status(201).json({
     success: true,
-    data: {
-      answer,
-      sources: ranked,
-    },
+    data: [userMessage, assistantMessage],
     error: null,
   });
 };
