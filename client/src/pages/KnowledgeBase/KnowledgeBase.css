@@ -1,0 +1,63 @@
+.knowledge-base {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.knowledge-base h1 {
+  margin-bottom: 32px;
+  font-family: "Space Grotesk", Arial, Helvetica, sans-serif;
+}
+
+.knowledge-base__content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.knowledge-base__library {
+  min-height: 120px;
+}
+
+.knowledge-base__message {
+  color: rgba(28, 28, 28, 0.6);
+}
+
+.knowledge-base__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+}
+
+.knowledge-base__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f6f3ff;
+}
+
+.knowledge-base__file-name {
+  font-size: 14px;
+}
+
+.knowledge-base__delete {
+  font-size: 22px;
+  line-height: 1;
+  color: #555;
+}
+
+.knowledge-base__save {
+  align-self: flex-end;
+  width: 140px;
+  padding: 12px 28px;
+  border-radius: 8px;
+  background: #7c3aed;
+  color: white;
+}
+
+.knowledge-base__message_error {
+  color: #d93025;
+}

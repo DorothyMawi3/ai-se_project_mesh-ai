@@ -1,0 +1,27 @@
+.upload-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 145px;
+  background: #f6f3ff;
+  border-radius: 16px;
+  font-family: "Work Sans", Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: rgba(28, 28, 28, 0.5);
+}
+
+.upload-area__label {
+  cursor: pointer;
+}
+
+.upload-area__label:hover {
+  color: rgba(28, 28, 28);
+}
+
+.upload-area__label .underline {
+  text-decoration: underline;
+}
+
+.upload-area__input {
+  display: none;
+}
