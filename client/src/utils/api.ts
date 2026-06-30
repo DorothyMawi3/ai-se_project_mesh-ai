@@ -66,3 +66,45 @@ export const getDocuments = async (): Promise<ApiResponse<KnowledgeDoc[]>> => {
     error: null,
   };
 };
+
+export const getChats = async (): Promise<ApiResponse<Chat[]>> => {
+  await delay(700);
+  return {
+    success: true,
+    data: [
+      {
+        _id: 'chat-1',
+        title: 'What is posthog',
+        userId: 'u1',
+        createdAt: new Date().toISOString(),
+      },
+      {
+        _id: 'chat-2',
+        title: 'Who are our users',
+        userId: 'u1',
+        createdAt: new Date().toISOString(),
+      },
+      {
+        _id: 'chat-3',
+        title: 'Marketing Hypothesis',
+        userId: 'u1',
+        createdAt: new Date().toISOString(),
+      },
+    ],
+    error: null,
+  };
+};
+
+export const createChat = async (title: string): Promise<ApiResponse<Chat>> => {
+  await delay(500);
+  return {
+    success: true,
+    data: {
+      _id: Date.now().toString(),
+      title,
+      userId: 'local',
+      createdAt: new Date().toISOString(),
+    },
+    error: null,
+  };
+};
