@@ -108,3 +108,54 @@ export const createChat = async (title: string): Promise<ApiResponse<Chat>> => {
     error: null,
   };
 };
+
+export const getChat = async (
+  id: string,
+): Promise<ApiResponse<{ chat: Chat; messages: Message[] }>> => {
+  await delay(700);
+
+  return {
+    success: true,
+    data: {
+      chat: {
+        _id: id,
+        title: 'Who are our users',
+        userId: 'u1',
+        createdAt: new Date().toISOString(),
+      },
+      messages: [
+        {
+          _id: 'm1',
+          chatId: id,
+          role: 'user',
+          content: 'Who are our users?',
+          createdAt: new Date().toISOString(),
+        },
+        {
+          _id: 'm2',
+          chatId: id,
+          role: 'assistant',
+          content:
+            '**Our users** are early-stage product teams, marketers, and founders who need fast insight from uploaded documents.',
+          createdAt: new Date().toISOString(),
+        },
+        {
+          _id: 'm3',
+          chatId: id,
+          role: 'user',
+          content: 'Can you summarize them?',
+          createdAt: new Date().toISOString(),
+        },
+        {
+          _id: 'm4',
+          chatId: id,
+          role: 'assistant',
+          content:
+            '### Summary\n\n- Product teams\n- Marketing teams\n- Startup founders\n\nThey use MeshAI to ask questions about their knowledge base.',
+          createdAt: new Date().toISOString(),
+        },
+      ],
+    },
+    error: null,
+  };
+};
