@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import './Chat.css';
-import { createChat, getChat, getChats } from '../../utils/api';
+import { createChat, getChat, getChats, sendMessage } from '../../utils/api';
 import type { Chat as ChatType, Message } from '../../utils/api';
 
 export default function Chat() {
@@ -14,6 +14,8 @@ export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [messagesError, setMessagesError] = useState('');
+  const [input, setInput] = useState('');
+  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -66,6 +68,49 @@ export default function Chat() {
       }
     } catch {
       setChatsError('Failed to create chat.');
+    }
+  };
+
+  const handleSend = async () => {
+    const text = input.trim();
+    if (!text || !activeChatId || isSending) return;
+
+    const userMessage: Message = {
+      _id: Date.now().toString(),
+      chatId: activeChatId,
+      role: 'user',
+      content: text,
+      createdAt: new Date().toISOString(),
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInput('');
+    setIsSending(true);
+
+    try {
+      const res = await sendMessage(activeChatId, text);
+      if (res.data) {
+        setMessages((prev) => [...prev, res.data!]);
+      }
+    } catch {
+      const errorMessage: Message = {
+        _id: Date.now().toString(),
+        chatId: activeChatId,
+        role: 'assistant',
+        content: 'Something went wrong. Please try again.',
+        createdAt: new Date().toISOString(),
+      };
+
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
     }
   };
 
@@ -154,25 +199,50 @@ export default function Chat() {
           </div>
         )}
 
-        {activeChatId && !isLoadingMessages && !messagesError && messages.length > 0 && (
-          <ul className="chat__messages">
-            {messages.map((msg) => (
-              <li
-                key={msg._id}
-                className={
-                  msg.role === 'user'
-                    ? 'chat__message chat__message_user'
-                    : 'chat__message chat__message_assistant'
-                }
+        {activeChatId && !isLoadingMessages && !messagesError && (
+          <>
+            {messages.length > 0 && (
+              <ul className="chat__messages">
+                {messages.map((msg) => (
+                  <li
+                    key={msg._id}
+                    className={
+                      msg.role === 'user'
+                        ? 'chat__message chat__message_user'
+                        : 'chat__message chat__message_assistant'
+                    }
+                  >
+                    {msg.role === 'assistant' ? (
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    ) : (
+                      msg.content
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <div className="chat__input-bar">
+              <textarea
+                className="chat__input"
+                placeholder="Ask any question"
+                rows={1}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                disabled={isSending}
+              />
+              <button
+                className="chat__send"
+                type="button"
+                aria-label="Send message"
+                onClick={handleSend}
+                disabled={isSending || !input.trim()}
               >
-                {msg.role === 'assistant' ? (
-                  <ReactMarkdown>{msg.content}</ReactMarkdown>
-                ) : (
-                  msg.content
-                )}
-              </li>
-            ))}
-          </ul>
+                ↑
+              </button>
+            </div>
+          </>
         )}
       </div>
     </div>

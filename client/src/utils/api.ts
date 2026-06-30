@@ -159,3 +159,22 @@ export const getChat = async (
     error: null,
   };
 };
+
+export const sendMessage = async (
+  chatId: string,
+  content: string,
+): Promise<ApiResponse<Message>> => {
+  await delay(1500);
+
+  return {
+    success: true,
+    data: {
+      _id: Date.now().toString(),
+      chatId,
+      role: 'assistant',
+      content: `You asked: **${content}**\n\nThis is a mock assistant response.`,
+      createdAt: new Date().toISOString(),
+    },
+    error: null,
+  };
+};
