@@ -1,0 +1,22 @@
+.chat {
+  max-width: 760px;
+  margin: 72px auto 0;
+  padding: 0 24px 48px;
+}
+
+.chat__title {
+  margin-bottom: 24px;
+  font-family: "Space Grotesk", Arial, Helvetica, sans-serif;
+  font-size: 44px;
+  line-height: 1.1;
+}
+
+.chat__box {
+  padding: 24px;
+  border-radius: 16px;
+  background: #f6f3ff;
+}
+
+.chat__message {
+  color: rgba(28, 28, 28, 0.7);
+}

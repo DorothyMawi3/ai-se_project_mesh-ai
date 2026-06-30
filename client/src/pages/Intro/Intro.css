@@ -1,0 +1,17 @@
+.intro {
+  max-width: 760px;
+  margin: 72px auto 0;
+  padding: 0 24px 48px;
+}
+
+.intro__title {
+  margin-bottom: 20px;
+  font-family: "Space Grotesk", Arial, Helvetica, sans-serif;
+  font-size: 44px;
+  line-height: 1.1;
+}
+
+.intro__text {
+  font-size: 18px;
+  color: rgba(28, 28, 28, 0.7);
+}
