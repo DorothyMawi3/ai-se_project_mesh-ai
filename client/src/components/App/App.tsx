@@ -8,8 +8,8 @@ import KnowledgeBase from '../../pages/KnowledgeBase/KnowledgeBase';
 function App() {
   return (
     <Routes>
+      <Route path="/" element={<Intro />} />
       <Route element={<AppLayout />}>
-        <Route path="/" element={<Intro />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/knowledge" element={<KnowledgeBase />} />
       </Route>
