@@ -2,20 +2,29 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 145px;
-  background: #f6f3ff;
+  height: 136px;
+  background: #f4efff;
   border-radius: 16px;
   font-family: "Work Sans", Arial, Helvetica, sans-serif;
-  font-size: 14px;
-  color: rgba(28, 28, 28, 0.5);
+  font-size: 16px;
+  color: rgba(28, 28, 28, 0.45);
 }
 
 .upload-area__label {
   cursor: pointer;
+  text-align: center;
+}
+
+.upload-area__label::before {
+  content: "☁";
+  display: block;
+  margin-bottom: 8px;
+  font-size: 28px;
+  line-height: 1;
 }
 
 .upload-area__label:hover {
-  color: rgba(28, 28, 28);
+  color: rgba(28, 28, 28, 0.75);
 }
 
 .upload-area__label .underline {
